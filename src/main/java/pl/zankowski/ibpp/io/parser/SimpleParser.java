@@ -10,7 +10,7 @@ public class SimpleParser implements OutputParser {
 
     @Override
     public String parse(IBProduct product, String exchange, String secType) {
-        return IBExchange.getExchangeFromCode(exchange).name() + ";" + product.getSymbol() + ";" + product.getDescription()
+        return exchange + ";" + product.getSymbol() + ";" + product.getDescription()
                 + ";" + secType + ";" + product.getCurrency();
     }
 

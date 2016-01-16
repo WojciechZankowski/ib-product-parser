@@ -19,11 +19,11 @@ public class HTMLParser {
     public static final String URL_TEMPLATE = "https://www.interactivebrokers.com/en/index.php?f=2222&exch=%s&showcategories=%s&showproducts=&sequence_idx=%s&sortproducts=&ib_entity=new#show";
 
     public List<IBProduct> parseProducts(String exchange, String secType) {
+        System.out.println("Downloading " + exchange + " data...");
         List<IBProduct> products = new ArrayList<IBProduct>();
 
         int index = 100;
         while (true) {
-            System.out.print("Downloading data.\r");
             Connection connection;
             try {
                 String url = String.format(URL_TEMPLATE, exchange, secType, String.valueOf(index));
@@ -36,8 +36,6 @@ public class HTMLParser {
                 if (!hasMore(bodyTags)) {
                     break;
                 }
-
-                System.out.print("Downloading data..\r");
 
                 Element tableDiv = bodyTags.getElementsByClass("table-responsive").get(3);
                 Element table = tableDiv.getElementsByTag("table").get(0);
@@ -57,8 +55,6 @@ public class HTMLParser {
                             .build();
                     products.add(product);
                 }
-
-                System.out.print("Downloading data...\r");
             } catch (IOException e) {
                 System.err.println(e);
             } finally {

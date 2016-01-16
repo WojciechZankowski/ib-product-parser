@@ -21,6 +21,7 @@ public class FileWriter {
     }
 
     public void write(List<IBProduct> productList, String exchange, String secType) {
+        System.out.println("Saving " + exchange + " file.");
         BufferedWriter writer = null;
         try {
             File file = new File("/" + IBExchange.getExchangeFromCode(exchange) + " - " + secType + ".txt");
