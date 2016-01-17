@@ -67,14 +67,7 @@ public class HTMLParser {
 		Elements rows = tableBody.getElementsByTag("tr");
 
 		for (Element row : rows) {
-			String symbol = row.getElementsByTag("td").get(0).text();
-			Element descElement = row.getElementsByTag("td").get(1);
-			String description = descElement.getElementsByTag("a").get(0).text();
-			String currency = row.getElementsByTag("td").get(3).text();
-
-			IBProduct product = new IBProduct.IBProductBuilder().symbol(symbol).description
-					(description).currency(currency).build();
-			products.add(product);
+			products.add(parseRow(row));
 		}
 	}
 
@@ -89,17 +82,22 @@ public class HTMLParser {
 			}
 
 			if (row.getElementsByTag("td").size() == 4) {
-				String symbol = row.getElementsByTag("td").get(0).text();
-				Element descElement = row.getElementsByTag("td").get(1);
-				String description = descElement.getElementsByTag("a").get(0).text();
-				String currency = row.getElementsByTag("td").get(3).text();
-
-				IBProduct product = new IBProduct.IBProductBuilder().symbol(symbol).description
-						(description).currency(currency).build();
-
-				products.add(product);
+				products.add(parseRow(row));
 			}
 		}
+	}
+
+	protected IBProduct parseRow(Element row) {
+		String symbol = row.getElementsByTag("td").get(0).text();
+		Element descElement = row.getElementsByTag("td").get(1);
+		String description = descElement.getElementsByTag("a").get(0).text();
+		String currency = row.getElementsByTag("td").get(3).text();
+
+		return new IBProduct.IBProductBuilder()
+				.symbol(symbol)
+				.description(description)
+				.currency(currency)
+				.build();
 	}
 
 	protected boolean hasMore(Element body) {
