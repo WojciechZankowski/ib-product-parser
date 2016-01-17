@@ -23,7 +23,6 @@ Product type, possible inputs:
   * ```FX``` - Forex
   * ```CMDTY``` - Metals
   * ```IND``` - Indices
-  * ```BOND``` - Bonds
 
 ## Presets:
 
