@@ -35,7 +35,7 @@ public class IBExchanges {
 	public static final IBExchange[] ALL_OPTIONS_NA = {IBExchange.BATS_GLOBAL_MARKETS, IBExchange
 			.BOSTON_OPTIONS, IBExchange.CBOE_C2, IBExchange.CBOE, IBExchange.EDGX_OPTIONS,
 			IBExchange.GEMINI, IBExchange.ISE_OPTIONS, IBExchange.MIAX_OPTIONS, IBExchange
-			.NASDAQ_OMX, IBExchange.NASDAQ_OMX_BX, IBExchange.NYSE_AMEX, IBExchange.NYSE_ARCA,
+			.NASDAQ_OMX, IBExchange.NASDAQ_OMX_BX_OPTIONS, IBExchange.NYSE_AMEX, IBExchange.NYSE_ARCA_OPTIONS,
 			IBExchange.PHLX, IBExchange.MONTREAL};
 
 	public static final IBExchange[] ALL_OPTIONS_EU = {IBExchange.EURONEXT_BRUSSELS, IBExchange

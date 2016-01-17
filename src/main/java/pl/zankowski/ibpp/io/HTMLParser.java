@@ -59,9 +59,11 @@ public class HTMLParser {
 	}
 
 	protected void parseStdTable(Element bodyTags, List<IBProduct> products) {
-		Element tableDiv = bodyTags.getElementsByClass("table-responsive").get(3);
+		Element tableDiv = bodyTags.getElementsByClass("table-responsive").get(bodyTags
+				.getElementsByClass("table-responsive").size() - 1);
 		Element table = tableDiv.getElementsByTag("table").get(0);
-		Element tableBody = table.getElementsByTag("tbody").get(0);
+		Element tableBody = table.getElementsByTag("tbody").get(table.getElementsByTag("tbody")
+				.size() - 1);
 		Elements rows = tableBody.getElementsByTag("tr");
 
 		for (Element row : rows) {

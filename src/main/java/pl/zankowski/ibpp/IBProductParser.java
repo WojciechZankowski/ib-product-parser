@@ -57,7 +57,8 @@ public class IBProductParser {
 
 	private void setUpProperties(CommandLineProperties properties) {
 		if (properties.getSecType().isEmpty()) {
-			throw new IllegalArgumentException("Illegal security type value. Security type cannot " +
+			throw new IllegalArgumentException("Illegal security type value. Security type cannot" +
+					" " +
 					"" + "be empty.");
 		}
 
@@ -163,8 +164,9 @@ public class IBProductParser {
 
 		for (String exchange : properties.getExchanges()) {
 			try {
-				fileWriter.write(htmlParser.parseProducts(exchange, properties.getSecType()),
-						exchange, properties.getSecType());
+				fileWriter.write(htmlParser.parseProducts(exchange, properties.getSecType().equals
+						("FOPTGRP") ? "OPTGRP" : properties.getSecType()), exchange, properties
+						.getSecType());
 			} catch (Exception e) {
 				// cry
 				e.printStackTrace();
