@@ -1,6 +1,5 @@
 package pl.zankowski.ibpp.io.parser;
 
-import pl.zankowski.ibpp.data.IBExchange;
 import pl.zankowski.ibpp.data.IBProduct;
 
 /**

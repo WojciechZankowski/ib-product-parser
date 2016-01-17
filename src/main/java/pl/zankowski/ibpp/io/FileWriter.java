@@ -37,7 +37,7 @@ public class FileWriter {
             }
         } catch (IOException e) {
             // cry
-            System.err.println(e);
+            e.printStackTrace();
         } finally {
             try {
                 if (writer != null) {
@@ -45,7 +45,7 @@ public class FileWriter {
                 }
             } catch (IOException e) {
                 // cry
-                System.err.println(e);
+                e.printStackTrace();
             }
         }
     }

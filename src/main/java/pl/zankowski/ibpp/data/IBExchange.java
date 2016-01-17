@@ -12,6 +12,7 @@ public enum IBExchange {
     BONDDESK("bonddesk"),
     BONDLARGE("bondlarge"),
     BOSTON_OPTIONS("box"),
+    CBOE("cboe"),
     CBOE_C2("cboe2"),
     CBOE_FUTURES("cfe"),
     CBOT("ecbot"),
@@ -129,7 +130,7 @@ public enum IBExchange {
     // SWITZERLAND
     BATS_EUROPE_CH("batech"),
     CHI_X_EUROPE_CH("chixch"),
-    EUREX("soffex"),
+    EUREX_CH("soffex"),
     SWISS_EXCHANGE("ebs"),
     TURQUOISE_CH("trqxch"),
     VIRT_X("virtx"),
@@ -137,6 +138,7 @@ public enum IBExchange {
     // UNITED KINGDOM
     BATS_EUROPE_UK("bateuk"),
     CHI_X_EUROPE_UK("chixuk"),
+    INTERCONTINENTAL_ENERGY("ipe"),
     INTERCONTINENTAL("iceeu"),
     INTERCONTINENTAL_SOFT("iceeusoft"),
     LONDON_STOCK("lse"),
