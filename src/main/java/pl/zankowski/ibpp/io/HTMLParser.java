@@ -5,11 +5,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import pl.zankowski.ibpp.data.IBProduct;
+import pl.zankowski.ibpp.data.IBExchange;
+import pl.zankowski.ibpp.io.parser.SimpleParser;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Wojciech Zankowski
@@ -22,43 +22,52 @@ public class HTMLParser {
 	public static final String ETFS_URL_TEMPLATE = "https://www.interactivebrokers" + "" +
 			".com/en/trading/etfs.php?exch=%s";
 
-	public List<IBProduct> parseProducts(String exchange, String secType) {
+	public static void parseProducts(String exchange, String secType) {
 		System.out.println("Downloading " + exchange + " data...");
-		List<IBProduct> products = new ArrayList<>();
+		FileWriter fileWriter = null;
+		try {
+			fileWriter = new FileWriter(new File("/" + IBExchange.getExchangeFromCode(exchange) +
+					" - " + secType + ".txt"), new SimpleParser());
 
-		int index = 100;
-		while (true) {
-			Connection connection;
-			try {
-				String url = getURL(exchange, secType, index);
-				connection = Jsoup.connect(url);
-				Document doc = connection.get();
 
-				Element htmlTag = doc.getElementsByTag("html").get(0);
-				Element bodyTags = htmlTag.getElementsByTag("body").get(0);
+			int index = 100;
+			while (true) {
+				Connection connection;
+				try {
+					String url = getURL(exchange, secType, index);
+					connection = Jsoup.connect(url);
+					Document doc = connection.get();
 
-				if (! secType.equals("ETFS") && ! hasMore(bodyTags)) {
-					break;
+					Element htmlTag = doc.getElementsByTag("html").get(0);
+					Element bodyTags = htmlTag.getElementsByTag("body").get(0);
+
+					if (! secType.equals("ETFS") && ! hasMore(bodyTags)) {
+						break;
+					}
+
+					if (secType.equals("ETFS")) {
+						parseBrokenTable(bodyTags, exchange, secType, fileWriter);
+						break;
+					} else {
+						parseStdTable(bodyTags, exchange, secType, fileWriter);
+					}
+				} catch (IOException e) {
+					// cry
+					e.printStackTrace();
+				} finally {
+					index += 100;
 				}
-
-				if (secType.equals("ETFS")) {
-					parseBrokenTable(bodyTags, products);
-					break;
-				} else {
-					parseStdTable(bodyTags, products);
-				}
-			} catch (IOException e) {
-				// cry
-				e.printStackTrace();
-			} finally {
-				index += 100;
 			}
+		} catch (IOException e) {
+			// cry
+			e.printStackTrace();
+		} finally {
+			fileWriter.close();
 		}
-
-		return products;
 	}
 
-	protected void parseStdTable(Element bodyTags, List<IBProduct> products) {
+	private static void parseStdTable(Element bodyTags, String exchange, String secType,
+	                                  FileWriter writer) throws IOException {
 		Element tableDiv = bodyTags.getElementsByClass("table-responsive").get(bodyTags
 				.getElementsByClass("table-responsive").size() - 1);
 		Element table = tableDiv.getElementsByTag("table").get(0);
@@ -67,11 +76,12 @@ public class HTMLParser {
 		Elements rows = tableBody.getElementsByTag("tr");
 
 		for (Element row : rows) {
-			products.add(parseRow(row));
+			parseRow(row, exchange, secType, writer);
 		}
 	}
 
-	protected void parseBrokenTable(Element bodyTags, List<IBProduct> products) {
+	private static void parseBrokenTable(Element bodyTags, String exchange, String secType,
+	                                     FileWriter writer) throws IOException {
 		int skip = 0;
 		Element table = bodyTags.getElementsByClass("TableOutline").get(1);
 		Elements rows = table.getElementsByTag("tr");
@@ -82,25 +92,22 @@ public class HTMLParser {
 			}
 
 			if (row.getElementsByTag("td").size() == 4) {
-				products.add(parseRow(row));
+				parseRow(row, exchange, secType, writer);
 			}
 		}
 	}
 
-	protected IBProduct parseRow(Element row) {
+	private static void parseRow(Element row, String exchange, String secType, FileWriter writer)
+			throws IOException {
 		String symbol = row.getElementsByTag("td").get(0).text();
 		Element descElement = row.getElementsByTag("td").get(1);
 		String description = descElement.getElementsByTag("a").get(0).text();
 		String currency = row.getElementsByTag("td").get(3).text();
 
-		return new IBProduct.IBProductBuilder()
-				.symbol(symbol)
-				.description(description)
-				.currency(currency)
-				.build();
+		writer.write(symbol, description, currency, exchange, secType);
 	}
 
-	protected boolean hasMore(Element body) {
+	private static boolean hasMore(Element body) {
 		Element contentElement = body.getElementById("contents");
 		Element section = contentElement.getElementById("products-exchanges");
 		Element container = section.getElementsByClass("container").get(0);
@@ -114,7 +121,7 @@ public class HTMLParser {
 		return true;
 	}
 
-	protected String getURL(String exchange, String secType, int index) {
+	private static String getURL(String exchange, String secType, int index) {
 		switch (secType) {
 			case "ETFS":
 				return String.format(ETFS_URL_TEMPLATE, exchange);

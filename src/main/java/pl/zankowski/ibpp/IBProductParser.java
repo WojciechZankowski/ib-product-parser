@@ -14,9 +14,6 @@ import java.util.List;
  */
 public class IBProductParser {
 
-	private HTMLParser htmlParser;
-	private FileWriter fileWriter;
-
 	public static void main(String[] args) {
 		IBProductParser ibpp = new IBProductParser();
 		ibpp.start(args);
@@ -57,7 +54,8 @@ public class IBProductParser {
 
 	private void setUpProperties(CommandLineProperties properties) {
 		if (properties.getSecType().isEmpty()) {
-			throw new IllegalArgumentException("Illegal security type value. Security type cannot" +
+			throw new IllegalArgumentException("Illegal security type value. Security type " +
+					"cannot" +
 					" " +
 					"" + "be empty.");
 		}
@@ -146,11 +144,6 @@ public class IBProductParser {
 				exchanges.add(IBExchanges.ALL_INDICES_EU);
 				exchanges.add(IBExchanges.ALL_INDICES_ASIA);
 				break;
-			case "BOND":
-				exchanges.add(IBExchanges.ALL_BONDS_NA);
-				exchanges.add(IBExchanges.ALL_BONDS_EU);
-				exchanges.add(IBExchanges.ALL_BONDS_ASIA);
-				break;
 			default:
 				throw new IllegalArgumentException("Illegal security type value. Security type " +
 						"cannot has " + secType + " value.");
@@ -159,14 +152,10 @@ public class IBProductParser {
 	}
 
 	private void run(CommandLineProperties properties) {
-		htmlParser = new HTMLParser();
-		fileWriter = new FileWriter(new SimpleParser());
-
 		for (String exchange : properties.getExchanges()) {
 			try {
-				fileWriter.write(htmlParser.parseProducts(exchange, properties.getSecType().equals
-						("FOPTGRP") ? "OPTGRP" : properties.getSecType()), exchange, properties
-						.getSecType());
+				HTMLParser.parseProducts(exchange, properties.getSecType().equals("FOPTGRP") ?
+						"OPTGRP" : properties.getSecType());
 			} catch (Exception e) {
 				// cry
 				e.printStackTrace();

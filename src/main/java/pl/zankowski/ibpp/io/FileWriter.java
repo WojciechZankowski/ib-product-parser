@@ -1,13 +1,10 @@
 package pl.zankowski.ibpp.io;
 
-import pl.zankowski.ibpp.data.IBExchange;
-import pl.zankowski.ibpp.data.IBProduct;
 import pl.zankowski.ibpp.io.parser.OutputParser;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @author Wojciech Zankowski
@@ -15,38 +12,36 @@ import java.util.List;
 public class FileWriter {
 
     private final OutputParser outputParser;
+    private final File file;
+    private BufferedWriter writer;
 
-    public FileWriter(OutputParser outputParser) {
+    public FileWriter(File file, OutputParser outputParser) throws IOException {
         this.outputParser = outputParser;
+        this.file = file;
+        initWriter(file);
     }
 
-    public void write(List<IBProduct> productList, String exchange, String secType) {
-        System.out.println("Saving " + exchange + " file.");
-        BufferedWriter writer = null;
+    private void initWriter(File file) throws IOException {
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
+        writer = new BufferedWriter(new java.io.FileWriter(file.getAbsoluteFile()));
+    }
+
+    public void write(String symbol, String description, String currency, String exchange, String secType) throws IOException {
+        writer.write(outputParser.parse(symbol, description, currency, exchange, secType) + "\n");
+    }
+
+    public void close() {
+        System.out.println("Saved " + file.getName() + " file.");
         try {
-            File file = new File("/" + IBExchange.getExchangeFromCode(exchange) + " - " + secType + ".txt");
-
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            writer = new BufferedWriter(new java.io.FileWriter(file.getAbsoluteFile()));
-
-            for (IBProduct product : productList) {
-                writer.write(outputParser.parse(product, exchange, secType) + "\n");
+            if (writer != null) {
+                writer.close();
             }
         } catch (IOException e) {
             // cry
             e.printStackTrace();
-        } finally {
-            try {
-                if (writer != null) {
-                    writer.close();
-                }
-            } catch (IOException e) {
-                // cry
-                e.printStackTrace();
-            }
         }
     }
 
