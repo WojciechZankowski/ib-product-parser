@@ -49,6 +49,6 @@ To simplify download there are made presets:
 
 ## Output format
 
-File is formatted in below way:
+File is formatted as below:
 
 ``` exchange;IB symbol;description;security type;currency ```
