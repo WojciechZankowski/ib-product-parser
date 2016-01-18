@@ -46,3 +46,9 @@ To simplify download there are made presets:
 * All future products from OneChicago exchange:
 
 ```java -jar ibpp.jar -e one -t FUTGRP```
+
+## Output format
+
+File is formatted as below:
+
+``` exchange;IB symbol;description;security type;currency ```
