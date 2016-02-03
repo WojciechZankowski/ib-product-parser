@@ -1,13 +1,11 @@
 package pl.zankowski.ibpp;
 
-import pl.zankowski.ibpp.data.IBExchange;
-import pl.zankowski.ibpp.data.IBExchanges;
-import pl.zankowski.ibpp.io.FileWriter;
-import pl.zankowski.ibpp.io.HTMLParser;
-import pl.zankowski.ibpp.io.parser.SimpleParser;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import pl.zankowski.ibpp.data.IBExchange;
+import pl.zankowski.ibpp.data.IBExchanges;
+import pl.zankowski.ibpp.io.HTMLParser;
 
 /**
  * @author Wojciech Zankowski
@@ -20,6 +18,10 @@ public class IBProductParser {
 	}
 
 	private void start(String[] args) {
+		if (args.length == 0) {
+			System.err.println("Failed to initialize application, no arguments.");
+		}
+		
 		CommandLineProperties properties = new CommandLineProperties();
 
 		for (int i = 0; i < args.length; i++) {

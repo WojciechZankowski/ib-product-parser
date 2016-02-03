@@ -22,6 +22,7 @@ public class FileWriter {
     }
 
     private void initWriter(File file) throws IOException {
+    	file.getParentFile().mkdirs();
         if (!file.exists()) {
             file.createNewFile();
         }

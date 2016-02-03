@@ -1,15 +1,16 @@
 package pl.zankowski.ibpp.io;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import pl.zankowski.ibpp.data.IBExchange;
 import pl.zankowski.ibpp.io.parser.SimpleParser;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * @author Wojciech Zankowski
@@ -26,9 +27,8 @@ public class HTMLParser {
 		System.out.println("Downloading " + exchange + " data...");
 		FileWriter fileWriter = null;
 		try {
-			fileWriter = new FileWriter(new File("/" + IBExchange.getExchangeFromCode(exchange) +
+			fileWriter = new FileWriter(new File("./" + IBExchange.getExchangeFromCode(exchange) +
 					" - " + secType + ".txt"), new SimpleParser());
-
 
 			int index = 100;
 			while (true) {
@@ -62,7 +62,9 @@ public class HTMLParser {
 			// cry
 			e.printStackTrace();
 		} finally {
-			fileWriter.close();
+			if (fileWriter != null) {
+				fileWriter.close();
+			}
 		}
 	}
 
