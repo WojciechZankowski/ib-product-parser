@@ -1,7 +1,5 @@
 package pl.zankowski.ibpp.io;
 
-import pl.zankowski.ibpp.formatter.OutputFormatter;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -11,12 +9,10 @@ import java.io.IOException;
  */
 public class FileWriter {
 
-    private final OutputFormatter outputParser;
     private final File file;
     private BufferedWriter writer;
 
-    public FileWriter(File file, OutputFormatter outputParser) throws IOException {
-        this.outputParser = outputParser;
+    public FileWriter(File file) throws IOException {
         this.file = file;
         initWriter(file);
     }
@@ -30,8 +26,9 @@ public class FileWriter {
         writer = new BufferedWriter(new java.io.FileWriter(file.getAbsoluteFile()));
     }
 
-    public void write(String symbol, String description, String currency, String exchange, String secType, String ISIN) throws IOException {
-        writer.write(outputParser.parse(symbol, description, currency, exchange, secType, ISIN) + "\n");
+    public void write(String line) throws IOException {
+        writer.write(line);
+        writer.newLine();
     }
 
     public void close() {

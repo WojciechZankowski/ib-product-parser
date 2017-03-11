@@ -26,12 +26,12 @@ public class CommandLineParser {
                     parseExchange(properties, args[i]);
                 }
             }
-            if (isSecTypeParameter(args[i])) {
+            if (i < args.length && isSecTypeParameter(args[i])) {
                 if (++i < args.length) {
                     parseSecType(properties, args[i]);
                 }
             }
-            if (isFormatterParameter(args[i])) {
+            if (i < args.length && isFormatterParameter(args[i])) {
                 if (++i < args.length) {
                     parseFormatter(properties, args[i]);
                 }

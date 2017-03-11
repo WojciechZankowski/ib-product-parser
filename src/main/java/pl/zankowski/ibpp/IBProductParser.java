@@ -2,7 +2,7 @@ package pl.zankowski.ibpp;
 
 import pl.zankowski.ibpp.cli.CommandLineParser;
 import pl.zankowski.ibpp.cli.CommandLineProperties;
-import pl.zankowski.ibpp.data.IBParserParameters;
+import pl.zankowski.ibpp.model.IBParserParameters;
 import pl.zankowski.ibpp.formatter.OutputFormatter;
 import pl.zankowski.ibpp.formatter.SimpleFormatter;
 import pl.zankowski.ibpp.util.IBParserParametersConverter;
@@ -29,7 +29,6 @@ public class IBProductParser {
 
         try {
             CommandLineProperties commandLineProperties = commandLineParser.parseCommandLineProperties(args);
-            validateCommandLineProperties(commandLineProperties);
 
             IBParserParameters ibParserParameters = IBParserParametersConverter.convert(commandLineProperties);
             OutputFormatter formatter = initFormatterClass(commandLineProperties.getOutputFormatterName());
@@ -42,16 +41,7 @@ public class IBProductParser {
         }
     }
 
-    private void validateCommandLineProperties(CommandLineProperties properties) {
-        if (properties.getSecType().isEmpty()) {
-            throw new IllegalArgumentException("Illegal security type value. Security type " +
-                    "cannot" +
-                    " " +
-                    "" + "be empty.");
-        }
-    }
-
-    private OutputFormatter initFormatterClass(String className) throws Exception {
+    protected OutputFormatter initFormatterClass(String className) throws Exception {
         if (className == null) {
             return new SimpleFormatter();
         }

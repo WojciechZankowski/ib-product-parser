@@ -3,8 +3,8 @@ package pl.zankowski.ibpp;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import pl.zankowski.ibpp.data.IBExchange;
-import pl.zankowski.ibpp.data.IBParserParameters;
+import pl.zankowski.ibpp.model.IBExchange;
+import pl.zankowski.ibpp.model.IBParserParameters;
 import pl.zankowski.ibpp.formatter.OutputFormatter;
 import pl.zankowski.ibpp.io.FileWriter;
 import pl.zankowski.ibpp.io.IBSourceParser;
@@ -21,22 +21,22 @@ import java.util.concurrent.Executors;
 public class IBProductParserService {
 
     private final ExecutorService crawlerExecutorService = Executors.newFixedThreadPool(4);
-    private final IBSourceParser sourceParser = new IBSourceParser();
 
     public void parse(IBParserParameters parserParameters, OutputFormatter outputFormatter) {
+        IBSourceParser sourceParser = new IBSourceParser(outputFormatter);
         for (String exchange : parserParameters.getExchanges()) {
             crawlerExecutorService.submit(() ->
-                    parse(exchange, parserParameters.getSecType(), outputFormatter)
+                    parse(exchange, parserParameters.getSecType(), sourceParser)
             );
         }
     }
 
-    private void parse(String exchange, String secType, OutputFormatter outputFormatter) {
+    private void parse(String exchange, String secType, IBSourceParser sourceParser) {
         System.out.println("Downloading " + exchange + " data...");
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(new File("./" + IBExchange.getExchangeFromCode(exchange) +
-                    " - " + secType + ".txt"), outputFormatter);
+                    " - " + secType + ".txt"));
 
             int page = 1;
             while (true) {

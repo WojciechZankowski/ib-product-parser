@@ -1,4 +1,4 @@
-package pl.zankowski.ibpp.data;
+package pl.zankowski.ibpp.model;
 
 /**
  * @author Wojciech Zankowski

@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import pl.zankowski.ibpp.formatter.OutputFormatter;
 import pl.zankowski.ibpp.util.CaptchaWannabeSolver;
 
 import java.io.IOException;
@@ -15,6 +16,11 @@ import java.io.IOException;
 public class IBSourceParser {
 
     private final CaptchaWannabeSolver captchaSolver = new CaptchaWannabeSolver();
+    private final OutputFormatter outputFormatter;
+
+    public IBSourceParser(OutputFormatter outputFormatter) {
+        this.outputFormatter = outputFormatter;
+    }
 
     public boolean parseProducts(Document document, String secType, String exchange, FileWriter fileWriter) throws IOException {
         Element htmlTag = document.getElementsByTag("html").get(0);
@@ -76,7 +82,7 @@ public class IBSourceParser {
             ISIN = openDetailsPage(url);
         }
 
-        writer.write(symbol, description, currency, exchange, secType, ISIN);
+        writer.write(outputFormatter.parse(symbol, description, currency, exchange, secType, ISIN));
     }
 
     private boolean hasMore(Element body) {

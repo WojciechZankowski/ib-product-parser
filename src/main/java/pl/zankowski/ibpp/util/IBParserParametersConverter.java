@@ -1,9 +1,9 @@
 package pl.zankowski.ibpp.util;
 
 import pl.zankowski.ibpp.cli.CommandLineProperties;
-import pl.zankowski.ibpp.data.IBExchange;
-import pl.zankowski.ibpp.data.IBExchanges;
-import pl.zankowski.ibpp.data.IBParserParameters;
+import pl.zankowski.ibpp.model.IBExchange;
+import pl.zankowski.ibpp.model.IBExchanges;
+import pl.zankowski.ibpp.model.IBParserParameters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,7 @@ import java.util.List;
 public class IBParserParametersConverter {
 
     public static IBParserParameters convert(CommandLineProperties properties) {
+        validateCommandLineProperties(properties);
         resolveExchanges(properties);
         adjustSecType(properties);
         return new IBParserParameters(properties.getExchanges(), properties.getSecType());
@@ -111,6 +112,12 @@ public class IBParserParametersConverter {
 
     private static boolean isFutureOptionSecType(String value) {
         return value.equals("FOPTGRP");
+    }
+
+    private static void validateCommandLineProperties(CommandLineProperties properties) {
+        if (properties.getSecType().isEmpty()) {
+            throw new IllegalArgumentException("Illegal security type value. Security type cannot be empty.");
+        }
     }
 
 }
