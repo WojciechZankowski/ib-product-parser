@@ -22,13 +22,11 @@ public class FileWriterTest {
         FileWriter fileWriter = new FileWriter(testFile);
 
         final String firstLine = "first";
-        final String secondLine = "second";
 
         fileWriter.write(firstLine);
-        fileWriter.write(secondLine);
         fileWriter.close();
 
-        assertFileContent(testFile, "first\r\nsecond");
+        assertFileContent(testFile, "first");
     }
 
     private void assertFileContent(File testFile, String expectedContent) throws FileNotFoundException {
