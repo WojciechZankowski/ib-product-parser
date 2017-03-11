@@ -27,7 +27,7 @@ Product type, possible inputs:
   * ```CMDTY``` - Metals
   * ```IND``` - Indices
   
-  * ```-f```
+* ``` -f ```
   
   Formatter class name, if not provided then SimpleFormatter is being used. 
 
