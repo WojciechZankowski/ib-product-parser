@@ -1,6 +1,6 @@
 package pl.zankowski.ibpp.io;
 
-import pl.zankowski.ibpp.io.parser.OutputParser;
+import pl.zankowski.ibpp.formatter.OutputFormatter;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,18 +11,18 @@ import java.io.IOException;
  */
 public class FileWriter {
 
-    private final OutputParser outputParser;
+    private final OutputFormatter outputParser;
     private final File file;
     private BufferedWriter writer;
 
-    public FileWriter(File file, OutputParser outputParser) throws IOException {
+    public FileWriter(File file, OutputFormatter outputParser) throws IOException {
         this.outputParser = outputParser;
         this.file = file;
         initWriter(file);
     }
 
     private void initWriter(File file) throws IOException {
-    	file.getParentFile().mkdirs();
+        file.getParentFile().mkdirs();
         if (!file.exists()) {
             file.createNewFile();
         }
@@ -30,8 +30,8 @@ public class FileWriter {
         writer = new BufferedWriter(new java.io.FileWriter(file.getAbsoluteFile()));
     }
 
-    public void write(String symbol, String description, String currency, String exchange, String secType) throws IOException {
-        writer.write(outputParser.parse(symbol, description, currency, exchange, secType) + "\n");
+    public void write(String symbol, String description, String currency, String exchange, String secType, String ISIN) throws IOException {
+        writer.write(outputParser.parse(symbol, description, currency, exchange, secType, ISIN) + "\n");
     }
 
     public void close() {
@@ -41,7 +41,6 @@ public class FileWriter {
                 writer.close();
             }
         } catch (IOException e) {
-            // cry
             e.printStackTrace();
         }
     }

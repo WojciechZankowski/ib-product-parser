@@ -182,10 +182,6 @@ public enum IBExchange {
         this.code = code;
     }
 
-    public String getCode() {
-        return code;
-    }
-
     public static IBExchange getExchangeFromCode(String code) {
         for (IBExchange exchange : values()) {
             if (exchange.getCode().equals(code)) {
@@ -193,6 +189,10 @@ public enum IBExchange {
             }
         }
         return IBExchange.UNKNOWN;
+    }
+
+    public String getCode() {
+        return code;
     }
 
 }
