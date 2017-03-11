@@ -14,15 +14,15 @@ public class SimpleFormatterTest {
     private final SimpleFormatter simpleFormatter = new SimpleFormatter();
 
     @Test
-    public void shouldSuccessffullyFormatEmptyOutput() {
-        String expectedOutput = ";;;;";
+    public void shouldSuccessfullyFormatEmptyOutput() {
+        String expectedOutput = ";;;;;";
         String actualOutput = simpleFormatter.parse("", "", "", "", "", "");
         assertThat(actualOutput).isEqualTo(expectedOutput);
     }
 
     @Test
     public void shouldSuccessfullyFormatOutput() {
-        final String expectedOutput = "IBM;IBMDesc;USD;NYSE;STK;ISB123";
+        final String expectedOutput = "NYSE;IBM;IBMDesc;STK;USD;ISB123";
         final String actualOutput = simpleFormatter.parse("IBM", "IBMDesc", "USD", "NYSE", "STK", "ISB123");
         assertThat(actualOutput).isEqualTo(expectedOutput);
     }
